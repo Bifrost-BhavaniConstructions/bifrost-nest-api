@@ -43,7 +43,6 @@ export class UserService {
     refreshAuthWrapper: RefreshAuthWrapper,
   ): Promise<User | null> {
     return this.Users.findOne({
-      _id: new mongoose.Types.ObjectId(refreshAuthWrapper.userId),
       refreshToken: refreshAuthWrapper.refreshToken,
     });
   }
