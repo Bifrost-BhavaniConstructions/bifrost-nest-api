@@ -8,6 +8,7 @@ import { UserDTO } from '../../dtos/UserDTO';
 import { RefreshAuthWrapper } from '../../wrappers/RefreshAuthWrapper';
 import { UserRoleEnum } from '../../enums/UserRoleEnum';
 import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -34,6 +35,29 @@ export class UserService {
     const newUser = new this.Users(userCreateWrapper);
     const savedUser = await newUser.save();
     return sanitizeUser(savedUser.toObject());
+  }
+  async updateUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
+    const isUserExist = await this.Users.exists({
+      username: userCreateWrapper.username,
+    });
+    if (!isUserExist) {
+      throw new HttpException("User doesn't exist", HttpStatus.CONFLICT);
+    }
+    const updateData: Partial<UserCreateWrapper> = { ...userCreateWrapper };
+    if (!userCreateWrapper.password) {
+      delete updateData.password;
+    } else {
+      updateData.password = await bcrypt.hash(userCreateWrapper.password, 10);
+    }
+    const updatedUser = await this.Users.findOneAndUpdate(
+      { username: userCreateWrapper.username },
+      updateData,
+      { new: true },
+    );
+    if (!updatedUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return sanitizeUser(updatedUser.toObject());
   }
 
   async findUserByUsername(username: string): Promise<User> {

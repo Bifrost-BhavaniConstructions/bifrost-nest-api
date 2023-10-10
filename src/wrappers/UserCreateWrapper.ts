@@ -6,6 +6,7 @@ import { PlatformEnum } from '../enums/PlatformEnum';
 import ManagerData from '../modules/UserModule/subschemas/ManagerData';
 
 export interface UserCreateWrapper {
+  _id?: string;
   username: string;
   password: string;
   role: UserRoleEnum;

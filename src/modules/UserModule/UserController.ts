@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './UserService';
 import { UserCreateWrapper } from '../../wrappers/UserCreateWrapper';
 import { Roles } from '../../decorators/Roles';
@@ -16,6 +16,13 @@ export class UserController {
   @UseGuards(JWTGuard, RoleGuard)
   createUser(@Body() userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
     return this.userService.createUser(userCreateWrapper);
+  }
+
+  @Roles(UserRoleEnum.SUPER_ADMIN)
+  @Put('/')
+  @UseGuards(JWTGuard, RoleGuard)
+  updateUser(@Body() userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
+    return this.userService.updateUser(userCreateWrapper);
   }
 
   @Roles(UserRoleEnum.SUPER_ADMIN)
