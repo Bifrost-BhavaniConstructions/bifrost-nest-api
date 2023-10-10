@@ -6,12 +6,25 @@ import { UserCreateWrapper } from '../../wrappers/UserCreateWrapper';
 import { sanitizeUser } from '../../helpers/HelperFunctions';
 import { UserDTO } from '../../dtos/UserDTO';
 import { RefreshAuthWrapper } from '../../wrappers/RefreshAuthWrapper';
+import { UserRoleEnum } from '../../enums/UserRoleEnum';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private Users: Model<User>) {}
 
   async createUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
+    if (
+      ![
+        UserRoleEnum.SUPER_ADMIN,
+        UserRoleEnum.ADMIN,
+        UserRoleEnum.FH_MANAGER,
+      ].includes(userCreateWrapper.role)
+    ) {
+      const uid = uuidv4();
+      userCreateWrapper.username = uid;
+      userCreateWrapper.password = uid;
+    }
     const isUserExist = await this.Users.exists({
       username: userCreateWrapper.username,
     });
@@ -60,5 +73,10 @@ export class UserService {
       },
     );
     return !!result;
+  }
+
+  async getAllUsers(): Promise<UserDTO[]> {
+    const allUsers = await this.Users.find({});
+    return allUsers.map((user) => sanitizeUser(user.toObject()));
   }
 }

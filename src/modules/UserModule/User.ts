@@ -5,6 +5,9 @@ import { UserRoleEnum } from '../../enums/UserRoleEnum';
 import SupervisorData from './subschemas/SupervisorData';
 import DriverData from './subschemas/DriverData';
 import BankData from './subschemas/BankData';
+import { PlatformEnum } from '../../enums/PlatformEnum';
+import ManagerData from './subschemas/ManagerData';
+import SecurityGuardSecondaryData from './subschemas/SecurityGuardSecondaryData';
 
 export type UserDocument = HydratedDocument<User> & Document;
 
@@ -20,6 +23,9 @@ export class User {
 
   @Prop({ type: String, enum: UserRoleEnum, required: true })
   role: UserRoleEnum;
+
+  @Prop({ type: [String], enum: PlatformEnum, required: true })
+  platforms: PlatformEnum[];
 
   @Prop({ type: String })
   refreshToken: string;
@@ -52,6 +58,12 @@ export class User {
 
   @Prop({ type: DriverData })
   driverData: DriverData;
+
+  @Prop({ type: ManagerData })
+  managerData: ManagerData;
+
+  @Prop({ type: SecurityGuardSecondaryData })
+  securityGuardSecondaryData: SecurityGuardSecondaryData;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
