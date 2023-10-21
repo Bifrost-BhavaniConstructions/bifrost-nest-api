@@ -6,6 +6,7 @@ import { User } from '../../UserModule/User';
 import { EnquiryType } from './EnquiryType';
 import EstimatePayment from './SubSchemas/EstimatePayment';
 import Inventory from './SubSchemas/Inventory';
+import { StatStatus } from './SubSchemas/StatStatus';
 
 export type EnquiryDocument = HydratedDocument<Enquiry> & Document;
 
@@ -69,6 +70,9 @@ export class Enquiry {
 
   @Prop([{ type: Inventory, default: [] }])
   inventory: Inventory[];
+
+  @Prop({ type: StatStatus })
+  statStatus: StatStatus;
 }
 
 export const EnquirySchema = SchemaFactory.createForClass(Enquiry);

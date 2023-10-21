@@ -12,6 +12,8 @@ import { EnquiryUpdateWrapper } from '../../../../wrappers/EnquiryUpdateWrapper'
 import Estimate from '../../Schemas/SubSchemas/Estimate';
 import { UpdatePaymentCreateWrapper } from '../../../../wrappers/UpdatePaymentCreateWrapper';
 import { InventoryWrapper } from '../../../../wrappers/InventoryWrapper';
+import { StatStatus } from '../../Schemas/SubSchemas/StatStatus';
+import { CheckInWrapper } from '../../../../wrappers/CheckInWrapper';
 
 @Injectable()
 export class EnquiryService {
@@ -133,6 +135,22 @@ export class EnquiryService {
   ): Promise<Enquiry> {
     const updatedEnquiry = await this.Enquiries.findByIdAndUpdate(id, {
       $push: { inventory: { items: inventoryData } },
+    });
+    if (!updatedEnquiry) {
+      throw new NotFoundException(`Estimate with ID ${id} not found`);
+    }
+    return updatedEnquiry;
+  }
+
+  async checkIn(id: string, data: CheckInWrapper): Promise<Enquiry> {
+    console.log(data.powerMeters);
+    const updatedEnquiry = await this.Enquiries.findByIdAndUpdate(id, {
+      $push: {
+        'statStatus.roomsAll': data.rooms,
+        'statStatus.powerMetersAll': data.powerMeters,
+        'statStatus.securityGuards': data.securityGuards,
+        'statStatus.inventoryAll': data.inventory,
+      },
     });
     if (!updatedEnquiry) {
       throw new NotFoundException(`Estimate with ID ${id} not found`);

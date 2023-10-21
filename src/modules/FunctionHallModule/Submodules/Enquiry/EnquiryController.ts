@@ -21,6 +21,7 @@ import { Response } from 'express';
 import Estimate from '../../Schemas/SubSchemas/Estimate';
 import { UpdatePaymentCreateWrapper } from '../../../../wrappers/UpdatePaymentCreateWrapper';
 import { InventoryWrapper } from '../../../../wrappers/InventoryWrapper';
+import { CheckInWrapper } from '../../../../wrappers/CheckInWrapper';
 
 @Controller('/function-hall/enquiry')
 export class EnquiryController {
@@ -101,6 +102,15 @@ export class EnquiryController {
     @Res() res: Response,
   ) {
     await this.enquiryService.updateInventory(enquiryId, inventoryData);
+    return res.sendStatus(200);
+  }
+  @Post('/check-in/:enquiryId')
+  async checkIn(
+    @Param('enquiryId') enquiryId: string,
+    @Body() checkInWrapper: CheckInWrapper,
+    @Res() res: Response,
+  ) {
+    await this.enquiryService.checkIn(enquiryId, checkInWrapper);
     return res.sendStatus(200);
   }
 }
