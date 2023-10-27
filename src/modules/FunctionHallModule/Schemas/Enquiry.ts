@@ -7,6 +7,7 @@ import { EnquiryType } from './EnquiryType';
 import EstimatePayment from './SubSchemas/EstimatePayment';
 import Inventory from './SubSchemas/Inventory';
 import { StatStatus } from './SubSchemas/StatStatus';
+import FollowUp from './SubSchemas/FollowUp';
 
 export type EnquiryDocument = HydratedDocument<Enquiry> & Document;
 
@@ -34,7 +35,7 @@ export class Enquiry {
   estimates: Estimate[];
 
   @Prop({
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    type: { type: 'ObjectId', ref: 'User' },
   })
   primaryReference: User;
 
@@ -71,8 +72,17 @@ export class Enquiry {
   @Prop([{ type: Inventory, default: [] }])
   inventory: Inventory[];
 
+  @Prop([{ type: FollowUp, default: [] }])
+  followUps: FollowUp[];
+
   @Prop({ type: StatStatus })
   statStatus: StatStatus;
+
+  @Prop({ type: Boolean, required: true, default: false })
+  isCheckedIn: boolean;
+
+  @Prop({ type: Boolean, required: true, default: false })
+  isCheckedOut: boolean;
 }
 
 export const EnquirySchema = SchemaFactory.createForClass(Enquiry);

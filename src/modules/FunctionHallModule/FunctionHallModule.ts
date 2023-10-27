@@ -12,6 +12,15 @@ import { EnquiryType, EnquiryTypeSchema } from './Schemas/EnquiryType';
 import { Muhurtam, MuhurtamSchema } from './Schemas/Muhurtam';
 import { EnquiryController } from './Submodules/Enquiry/EnquiryController';
 import { EnquiryService } from './Submodules/Enquiry/EnquiryService';
+import {
+  CashAccount,
+  CashAccountSchema,
+} from '../CashAccountModule/Schemas/CashAccount';
+import { CashAccountService } from '../CashAccountModule/CashAccountService';
+import {
+  Transaction,
+  TransactionSchema,
+} from '../CashAccountModule/Schemas/Transaction';
 
 @Module({
   imports: [
@@ -21,6 +30,8 @@ import { EnquiryService } from './Submodules/Enquiry/EnquiryService';
       { name: Enquiry.name, schema: EnquirySchema },
       { name: EnquiryType.name, schema: EnquiryTypeSchema },
       { name: Muhurtam.name, schema: MuhurtamSchema },
+      { name: CashAccount.name, schema: CashAccountSchema },
+      { name: Transaction.name, schema: TransactionSchema },
     ]),
   ],
   controllers: [FunctionHallController, EnquiryController],
@@ -30,6 +41,7 @@ import { EnquiryService } from './Submodules/Enquiry/EnquiryService';
     UserService,
     EnquiryService,
     JWTStrategy,
+    CashAccountService,
   ],
 })
 export class FunctionHallModule {}

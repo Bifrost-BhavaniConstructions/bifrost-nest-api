@@ -5,6 +5,7 @@ import { UserModule } from './modules/UserModule/UserModule';
 import { AuthModule } from './modules/AuthModule/AuthModule';
 import { HealthModule } from './modules/HealthModule/HealthModule';
 import { FunctionHallModule } from './modules/FunctionHallModule/FunctionHallModule';
+import { CashAccountModule } from './modules/CashAccountModule/CashAccountModule';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { FunctionHallModule } from './modules/FunctionHallModule/FunctionHallMod
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('DATABASE_CONN_STRING'),
+        useNewUrlParser: true,
       }),
       inject: [ConfigService],
     }),
@@ -20,6 +22,7 @@ import { FunctionHallModule } from './modules/FunctionHallModule/FunctionHallMod
     AuthModule,
     HealthModule,
     FunctionHallModule,
+    CashAccountModule,
   ],
 })
 export class AppModule {}

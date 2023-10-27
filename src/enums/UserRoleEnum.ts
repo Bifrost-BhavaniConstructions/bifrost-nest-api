@@ -6,4 +6,5 @@ export enum UserRoleEnum {
   VENDOR = 'VENDOR',
   FH_MANAGER = 'FH_MANAGER',
   FH_SECURITY = 'FH_SECURITY',
+  FH_VENDOR = 'FH_VENDOR',
 }

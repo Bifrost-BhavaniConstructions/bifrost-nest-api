@@ -1,12 +1,5 @@
 // Create a file, e.g., enquiry.dto.ts
-import {
-  IsNotEmpty,
-  IsString,
-  IsDate,
-  IsNumber,
-  IsArray,
-  IsMongoId,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsArray, IsMongoId } from 'class-validator';
 import Estimate from '../modules/FunctionHallModule/Schemas/SubSchemas/Estimate';
 
 export class EnquiryCreateWrapper {
@@ -19,10 +12,9 @@ export class EnquiryCreateWrapper {
   functionHall: string;
 
   @IsNotEmpty()
-  @IsDate()
   fromDate: Date;
 
-  @IsDate()
+  @IsNotEmpty()
   toDate: Date;
 
   @IsArray()
@@ -32,22 +24,18 @@ export class EnquiryCreateWrapper {
   @IsMongoId()
   primaryReference: string;
 
-  @IsNotEmpty()
   @IsString()
   secondaryReference: string;
 
   @IsNotEmpty()
-  @IsNumber()
   primaryContactNumber: number;
 
   @IsNotEmpty()
   @IsString()
   primaryContactName: string;
 
-  @IsNumber()
   secondaryContactNumber: number;
 
-  @IsNotEmpty()
   @IsString()
   secondaryContactName: string;
 

@@ -25,7 +25,7 @@ export class FunctionHall {
   @Prop([{ type: Generator }])
   generators: Generator[];
 
-  @Prop([{ type: InventoryType }])
+  @Prop([{ type: PowerMeter }])
   powerMeters: PowerMeter[];
 
   @Prop([{ type: Room, default: [] }])

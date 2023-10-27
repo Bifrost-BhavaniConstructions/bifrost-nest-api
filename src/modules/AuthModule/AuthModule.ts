@@ -5,12 +5,25 @@ import { UserService } from '../UserModule/UserService';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../UserModule/User';
 import { JWTStrategy } from '../../jwt/JWTStrategy';
+import { CashAccountService } from '../CashAccountModule/CashAccountService';
+import {
+  CashAccount,
+  CashAccountSchema,
+} from '../CashAccountModule/Schemas/CashAccount';
+import {
+  Transaction,
+  TransactionSchema,
+} from '../CashAccountModule/Schemas/Transaction';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: CashAccount.name, schema: CashAccountSchema },
+      { name: Transaction.name, schema: TransactionSchema },
+    ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, JWTStrategy],
+  providers: [AuthService, UserService, JWTStrategy, CashAccountService],
 })
 export class AuthModule {}

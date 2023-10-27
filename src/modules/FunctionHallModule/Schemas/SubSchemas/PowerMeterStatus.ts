@@ -8,5 +8,8 @@ export class PowerMeterStatus {
   name: string;
 
   @Prop({ type: Number, required: true })
-  reading: string;
+  reading: number;
+
+  @Prop({ type: Date, required: true })
+  markedAt: Date;
 }

@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Res,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { EnquiryService } from './EnquiryService';
@@ -22,6 +23,8 @@ import Estimate from '../../Schemas/SubSchemas/Estimate';
 import { UpdatePaymentCreateWrapper } from '../../../../wrappers/UpdatePaymentCreateWrapper';
 import { InventoryWrapper } from '../../../../wrappers/InventoryWrapper';
 import { CheckInWrapper } from '../../../../wrappers/CheckInWrapper';
+import FollowUp from '../../Schemas/SubSchemas/FollowUp';
+import { User } from '../../../UserModule/User';
 
 @Controller('/function-hall/enquiry')
 export class EnquiryController {
@@ -95,6 +98,19 @@ export class EnquiryController {
     );
     return res.sendStatus(200);
   }
+  @Post('/followup/:enquiryId')
+  @UseGuards(JWTGuard)
+  async addFollowUp(
+    @Param('enquiryId') enquiryId: string,
+    @Body()
+    followUp: FollowUp,
+    @Res() res: Response,
+    @Req() req: any,
+  ) {
+    const user = req.user as User;
+    await this.enquiryService.addFollowUp(enquiryId, followUp, user._id);
+    return res.sendStatus(200);
+  }
   @Post('/inventory/:enquiryId')
   async updateInventory(
     @Param('enquiryId') enquiryId: string,
@@ -104,13 +120,13 @@ export class EnquiryController {
     await this.enquiryService.updateInventory(enquiryId, inventoryData);
     return res.sendStatus(200);
   }
-  @Post('/check-in/:enquiryId')
+  @Post('/update-status/:enquiryId')
   async checkIn(
     @Param('enquiryId') enquiryId: string,
     @Body() checkInWrapper: CheckInWrapper,
     @Res() res: Response,
   ) {
-    await this.enquiryService.checkIn(enquiryId, checkInWrapper);
+    await this.enquiryService.updateStatus(enquiryId, checkInWrapper);
     return res.sendStatus(200);
   }
 }

@@ -9,10 +9,14 @@ import { RefreshAuthWrapper } from '../../wrappers/RefreshAuthWrapper';
 import { UserRoleEnum } from '../../enums/UserRoleEnum';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
+import { CashAccountService } from '../CashAccountModule/CashAccountService';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private Users: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private Users: Model<User>,
+    private readonly cashAccountService: CashAccountService,
+  ) {}
 
   async createUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
     if (
@@ -34,6 +38,7 @@ export class UserService {
     }
     const newUser = new this.Users(userCreateWrapper);
     const savedUser = await newUser.save();
+    await this.cashAccountService.createCashAccount(savedUser._id.toString());
     return sanitizeUser(savedUser.toObject());
   }
   async updateUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {

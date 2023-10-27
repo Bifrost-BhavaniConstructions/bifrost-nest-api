@@ -12,8 +12,8 @@ import { EnquiryUpdateWrapper } from '../../../../wrappers/EnquiryUpdateWrapper'
 import Estimate from '../../Schemas/SubSchemas/Estimate';
 import { UpdatePaymentCreateWrapper } from '../../../../wrappers/UpdatePaymentCreateWrapper';
 import { InventoryWrapper } from '../../../../wrappers/InventoryWrapper';
-import { StatStatus } from '../../Schemas/SubSchemas/StatStatus';
 import { CheckInWrapper } from '../../../../wrappers/CheckInWrapper';
+import FollowUp from '../../Schemas/SubSchemas/FollowUp';
 
 @Injectable()
 export class EnquiryService {
@@ -86,10 +86,36 @@ export class EnquiryService {
   async acceptPayment(
     id: string,
     updateDto: UpdatePaymentCreateWrapper,
-  ): Promise<Estimate> {
+  ): Promise<Enquiry> {
     const updatedEstimate = await this.Enquiries.findByIdAndUpdate(id, {
       $push: {
         payments: { payment: updateDto.paymentAmount },
+      },
+      $set: {
+        isCheckedOut: updateDto.isCheckedOut,
+      },
+    });
+
+    if (!updatedEstimate) {
+      throw new NotFoundException(`Estimate with ID ${id} not found`);
+    }
+
+    return updatedEstimate.toObject();
+  }
+
+  async addFollowUp(
+    id: string,
+    followUp: FollowUp,
+    user: mongoose.Types.ObjectId,
+  ): Promise<Enquiry> {
+    console.log(user);
+    const updatedEstimate = await this.Enquiries.findByIdAndUpdate(id, {
+      $push: {
+        followUps: {
+          remark: followUp.remark,
+          datetime: followUp.datetime,
+          user,
+        },
       },
     });
 
@@ -122,7 +148,15 @@ export class EnquiryService {
     return this.Enquiries.find({})
       .populate('enquiryType')
       .populate('primaryReference')
-      .populate('functionHall');
+      .populate('functionHall')
+      .populate({
+        path: 'followUps',
+        populate: {
+          path: 'user',
+          select: 'name', // Select the 'name' field from the User model
+        },
+      })
+      .exec();
   }
   async getAllEnquiryTypes(): Promise<EnquiryType[]> {
     return this.EnquiryTypes.find({});
@@ -142,14 +176,18 @@ export class EnquiryService {
     return updatedEnquiry;
   }
 
-  async checkIn(id: string, data: CheckInWrapper): Promise<Enquiry> {
-    console.log(data.powerMeters);
+  async updateStatus(id: string, data: CheckInWrapper): Promise<Enquiry> {
+    console.log(data.generators[0].sessions);
     const updatedEnquiry = await this.Enquiries.findByIdAndUpdate(id, {
       $push: {
         'statStatus.roomsAll': data.rooms,
         'statStatus.powerMetersAll': data.powerMeters,
         'statStatus.securityGuards': data.securityGuards,
         'statStatus.inventoryAll': data.inventory,
+      },
+      $set: {
+        isCheckedIn: true,
+        'statStatus.generatorsAll': data.generators,
       },
     });
     if (!updatedEnquiry) {

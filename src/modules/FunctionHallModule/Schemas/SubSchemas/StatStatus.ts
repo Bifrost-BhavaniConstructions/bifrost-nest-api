@@ -2,6 +2,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import { PowerMeterStatus } from './PowerMeterStatus';
 import { RoomStatus } from './RoomStatus';
 import { InventoryType } from './Inventory';
+import { GeneratorStatus } from './GeneratorStatus';
 
 @Schema({ _id: false })
 export class StatStatusRoom {
@@ -47,6 +48,9 @@ export class StatStatus {
 
   @Prop([[{ type: PowerMeterStatus, required: true, default: [] }]])
   powerMetersAll: PowerMeterStatus[][];
+
+  @Prop([{ type: GeneratorStatus, required: true, default: [] }])
+  generatorsAll: GeneratorStatus[];
 
   @Prop([{ type: Number, required: true, default: 0 }])
   securityGuards: number[];
