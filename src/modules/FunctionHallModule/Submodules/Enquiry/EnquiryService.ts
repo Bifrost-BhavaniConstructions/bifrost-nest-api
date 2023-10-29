@@ -89,7 +89,11 @@ export class EnquiryService {
   ): Promise<Enquiry> {
     const updatedEstimate = await this.Enquiries.findByIdAndUpdate(id, {
       $push: {
-        payments: { payment: updateDto.paymentAmount },
+        payments: {
+          payment: updateDto.paymentAmount,
+          modeOfPayment: updateDto.modeOfPayment,
+          remark: updateDto.remark,
+        },
       },
       $set: {
         isCheckedOut: updateDto.isCheckedOut,
@@ -133,6 +137,8 @@ export class EnquiryService {
     const updatedEstimate = await this.Enquiries.findByIdAndUpdate(id, {
       $set: {
         bookingAmount: updateDto.paymentAmount,
+        modeOfPayment: updateDto.modeOfPayment!,
+        remark: updateDto.remark!,
         isBooking: true,
       },
     });

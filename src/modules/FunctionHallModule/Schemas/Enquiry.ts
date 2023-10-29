@@ -8,6 +8,7 @@ import EstimatePayment from './SubSchemas/EstimatePayment';
 import Inventory from './SubSchemas/Inventory';
 import { StatStatus } from './SubSchemas/StatStatus';
 import FollowUp from './SubSchemas/FollowUp';
+import { ModeOfPaymentEnum } from '../../../enums/ModeOfPaymentEnum';
 
 export type EnquiryDocument = HydratedDocument<Enquiry> & Document;
 
@@ -62,6 +63,12 @@ export class Enquiry {
 
   @Prop({ type: Number, default: 0 })
   bookingAmount: number;
+
+  @Prop({ type: String, default: 0 })
+  remark: string;
+
+  @Prop({ type: String, enum: ModeOfPaymentEnum, required: true })
+  modeOfPayment: ModeOfPaymentEnum;
 
   @Prop([{ type: EstimatePayment, default: [] }])
   payments: EstimatePayment[];

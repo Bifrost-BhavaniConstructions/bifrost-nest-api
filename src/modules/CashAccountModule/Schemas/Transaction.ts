@@ -3,6 +3,8 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { CashAccount } from './CashAccount';
 import { TransactionTypeEnum } from '../../../enums/TransactionTypeEnum';
 import { PlatformEnum } from '../../../enums/PlatformEnum';
+import { FunctionHall } from '../../FunctionHallModule/Schemas/FunctionHall';
+import { TransactionPurpose } from './TransactionPurpose';
 
 export type TransactionDocument = HydratedDocument<Transaction> & Document;
 
@@ -23,6 +25,12 @@ export class Transaction {
   @Prop({ type: Number, required: true, default: 0 })
   amount: number;
 
+  @Prop({ type: Number, default: 0 })
+  fromBalance: number;
+
+  @Prop({ type: Number, default: 0 })
+  toBalance: number;
+
   @Prop({ type: String, required: true, default: '' })
   remarks: string;
 
@@ -31,6 +39,12 @@ export class Transaction {
 
   @Prop({ type: String, enum: PlatformEnum, required: true })
   platform: PlatformEnum;
+
+  @Prop({ type: 'ObjectId', ref: 'FunctionHall' })
+  functionHall: FunctionHall;
+
+  @Prop({ type: 'ObjectId', ref: 'TransactionPurpose' })
+  transactionPurpose: TransactionPurpose;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

@@ -8,6 +8,10 @@ import { CashAccount, CashAccountSchema } from './Schemas/CashAccount';
 import { UserService } from '../UserModule/UserService';
 import { User, UserSchema } from '../UserModule/User';
 import { Transaction, TransactionSchema } from './Schemas/Transaction';
+import {
+  TransactionPurpose,
+  TransactionPurposeSchema,
+} from './Schemas/TransactionPurpose';
 
 @Module({
   imports: [
@@ -15,6 +19,7 @@ import { Transaction, TransactionSchema } from './Schemas/Transaction';
       { name: User.name, schema: UserSchema },
       { name: CashAccount.name, schema: CashAccountSchema },
       { name: Transaction.name, schema: TransactionSchema },
+      { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
     ]),
   ],
   controllers: [CashAccountController],

@@ -15,20 +15,18 @@ export class CashAccountController {
   @Roles(UserRoleEnum.SUPER_ADMIN)
   @Post('/account/:userId')
   @UseGuards(JWTGuard, RoleGuard)
-  createFunctionHall(@Param('userId') userId: string): Promise<CashAccount> {
+  createCashAccount(@Param('userId') userId: string): Promise<CashAccount> {
     return this.cashAccountService.createCashAccount(userId);
   }
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Get('/account/:userId')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   getCashAccount(@Param('userId') userId: string): Promise<CashAccount> {
     return this.cashAccountService.getCashAccount(userId);
   }
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Post('/transaction')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   async addTransaction(
     @Body() transactionCreateWrapper: TransactionCreateWrapper,
   ): Promise<Transaction> {
@@ -41,5 +39,11 @@ export class CashAccountController {
   @UseGuards(JWTGuard)
   async getTransactionsByUserId(@Param('userId') userId: string) {
     return await this.cashAccountService.getTransactionsByUserId(userId);
+  }
+
+  @Get('/transaction-purpose')
+  @UseGuards(JWTGuard)
+  async getAllTransactionPurposes() {
+    return await this.cashAccountService.getAllTransactionPurposes();
   }
 }

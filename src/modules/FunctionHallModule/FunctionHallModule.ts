@@ -21,6 +21,10 @@ import {
   Transaction,
   TransactionSchema,
 } from '../CashAccountModule/Schemas/Transaction';
+import {
+  TransactionPurpose,
+  TransactionPurposeSchema,
+} from '../CashAccountModule/Schemas/TransactionPurpose';
 
 @Module({
   imports: [
@@ -32,6 +36,7 @@ import {
       { name: Muhurtam.name, schema: MuhurtamSchema },
       { name: CashAccount.name, schema: CashAccountSchema },
       { name: Transaction.name, schema: TransactionSchema },
+      { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
     ]),
   ],
   controllers: [FunctionHallController, EnquiryController],

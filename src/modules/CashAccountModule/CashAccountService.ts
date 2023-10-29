@@ -9,12 +9,16 @@ import mongoose, { Model } from 'mongoose';
 import { CashAccount } from './Schemas/CashAccount';
 import { Transaction } from './Schemas/Transaction';
 import { TransactionCreateWrapper } from '../../wrappers/TransactionCreateWrapper';
+import { EnquiryType } from '../FunctionHallModule/Schemas/EnquiryType';
+import { TransactionPurpose } from './Schemas/TransactionPurpose';
 
 @Injectable()
 export class CashAccountService {
   constructor(
     @InjectModel(CashAccount.name) private CashAccounts: Model<CashAccount>,
     @InjectModel(Transaction.name) private Transactions: Model<Transaction>,
+    @InjectModel(TransactionPurpose.name)
+    private TransactionPurposes: Model<TransactionPurpose>,
   ) {}
 
   async createCashAccount(userId: string): Promise<CashAccount> {
@@ -65,6 +69,8 @@ export class CashAccountService {
           throw new NotFoundException(`Cash Account Not Found`);
         }
         transactionCreateWrapper.from = fromUser._id.toString();
+        transactionCreateWrapper.fromBalance =
+          Number(fromUser.balance) - Number(transactionCreateWrapper.amount);
       }
 
       // Update the 'to' account
@@ -79,6 +85,8 @@ export class CashAccountService {
           throw new NotFoundException(`Cash Account Not Found`);
         }
         transactionCreateWrapper.to = toUser._id.toString();
+        transactionCreateWrapper.toBalance =
+          Number(toUser.balance) + Number(transactionCreateWrapper.amount);
       }
 
       const transaction = new this.Transactions(transactionCreateWrapper);
@@ -107,7 +115,15 @@ export class CashAccountService {
     })
       .populate({ path: 'from', populate: { path: 'user' } })
       .populate({ path: 'to', populate: { path: 'user' } })
+      .populate({
+        path: 'transactionPurpose',
+        select: 'name',
+      })
       .sort({ createdAt: -1 })
       .exec();
+  }
+
+  async getAllTransactionPurposes(): Promise<TransactionPurpose[]> {
+    return this.TransactionPurposes.find({});
   }
 }

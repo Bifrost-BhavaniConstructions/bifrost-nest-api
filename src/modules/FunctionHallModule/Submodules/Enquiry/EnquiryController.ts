@@ -30,18 +30,16 @@ import { User } from '../../../UserModule/User';
 export class EnquiryController {
   constructor(private readonly enquiryService: EnquiryService) {}
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Post('/')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   createEnquiry(
     @Body() enquiryCreateWrapper: EnquiryCreateWrapper,
   ): Promise<Enquiry> {
     return this.enquiryService.createEnquiry(enquiryCreateWrapper);
   }
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Put('/')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   async updateEnquiry(
     @Body() enquiryUpdateWrapper: EnquiryUpdateWrapper,
     @Res() res: Response,
@@ -49,15 +47,15 @@ export class EnquiryController {
     await this.enquiryService.updateEnquiry(enquiryUpdateWrapper);
     return res.sendStatus(200);
   }
-  @Roles(UserRoleEnum.SUPER_ADMIN)
+
   @Get('/')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   async getEnquiry(): Promise<Enquiry[]> {
     return await this.enquiryService.getAllEnquiries();
   }
-  @Roles(UserRoleEnum.SUPER_ADMIN)
+
   @Get('/enquiry-types')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   async getEnquiryTypes(): Promise<EnquiryType[]> {
     return await this.enquiryService.getAllEnquiryTypes();
   }

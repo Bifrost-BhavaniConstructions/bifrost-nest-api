@@ -25,9 +25,8 @@ export class UserController {
     return this.userService.updateUser(userCreateWrapper);
   }
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Get('/')
-  @UseGuards(JWTGuard, RoleGuard)
+  @UseGuards(JWTGuard)
   getAllUsers(): Promise<UserDTO[]> {
     return this.userService.getAllUsers();
   }

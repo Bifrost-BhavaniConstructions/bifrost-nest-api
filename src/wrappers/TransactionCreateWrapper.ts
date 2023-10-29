@@ -11,4 +11,7 @@ export class TransactionCreateWrapper {
   transactionType: TransactionTypeEnum;
   @IsNotEmpty()
   platform: PlatformEnum;
+  fromBalance?: number;
+  toBalance?: number;
+  functionHall: string;
 }
