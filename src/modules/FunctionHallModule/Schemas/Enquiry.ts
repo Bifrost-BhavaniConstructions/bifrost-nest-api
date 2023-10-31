@@ -67,7 +67,7 @@ export class Enquiry {
   @Prop({ type: String, default: 0 })
   remark: string;
 
-  @Prop({ type: String, enum: ModeOfPaymentEnum, required: true })
+  @Prop({ type: String, enum: ModeOfPaymentEnum })
   modeOfPayment: ModeOfPaymentEnum;
 
   @Prop([{ type: EstimatePayment, default: [] }])
