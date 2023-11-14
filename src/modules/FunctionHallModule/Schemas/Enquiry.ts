@@ -75,7 +75,7 @@ export class Enquiry {
   @Prop({ type: String, enum: ModeOfPaymentEnum })
   modeOfPayment: ModeOfPaymentEnum;
 
-  @Prop({ type: String, enum: PartOfDayEnum })
+  @Prop({ type: String, enum: PartOfDayEnum, default: PartOfDayEnum.MORNING })
   partOfDay: PartOfDayEnum;
 
   @Prop([{ type: EstimatePayment, default: [] }])
