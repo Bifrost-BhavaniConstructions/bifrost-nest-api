@@ -1,7 +1,6 @@
 // Create a file, e.g., enquiry.dto.ts
 import {
   IsArray,
-  IsDate,
   IsMongoId,
   IsNotEmpty,
   IsNumber,
@@ -9,6 +8,7 @@ import {
 } from 'class-validator';
 import { Optional } from '@nestjs/common';
 import Estimate from '../modules/FunctionHallModule/Schemas/SubSchemas/Estimate';
+import { PartOfDayEnum } from '../enums/PartOfDayEnum';
 
 export class EnquiryUpdateWrapper {
   @IsNotEmpty()
@@ -24,17 +24,15 @@ export class EnquiryUpdateWrapper {
   functionHall: string;
 
   @IsNotEmpty()
-  @IsDate()
   fromDate: Date;
 
-  @IsDate()
+  @IsNotEmpty()
   toDate: Date;
 
   @IsNotEmpty()
   @IsMongoId()
   primaryReference: string;
 
-  @IsNotEmpty()
   @IsString()
   secondaryReference: string;
 
@@ -50,10 +48,13 @@ export class EnquiryUpdateWrapper {
   @IsString()
   primaryContactName: string;
 
-  @IsNumber()
   secondaryContactNumber: number;
 
   @IsNotEmpty()
+  pax: number;
+
+  partOfDay: PartOfDayEnum;
+
   @IsString()
   secondaryContactName: string;
 

@@ -9,6 +9,7 @@ import Inventory from './SubSchemas/Inventory';
 import { StatStatus } from './SubSchemas/StatStatus';
 import FollowUp from './SubSchemas/FollowUp';
 import { ModeOfPaymentEnum } from '../../../enums/ModeOfPaymentEnum';
+import { PartOfDayEnum } from '../../../enums/PartOfDayEnum';
 
 export type EnquiryDocument = HydratedDocument<Enquiry> & Document;
 
@@ -36,7 +37,8 @@ export class Enquiry {
   estimates: Estimate[];
 
   @Prop({
-    type: { type: 'ObjectId', ref: 'User' },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   })
   primaryReference: User;
 
@@ -64,11 +66,17 @@ export class Enquiry {
   @Prop({ type: Number, default: 0 })
   bookingAmount: number;
 
+  @Prop({ type: Number, default: 0 })
+  pax: number;
+
   @Prop({ type: String, default: 0 })
   remark: string;
 
   @Prop({ type: String, enum: ModeOfPaymentEnum })
   modeOfPayment: ModeOfPaymentEnum;
+
+  @Prop({ type: String, enum: PartOfDayEnum })
+  partOfDay: PartOfDayEnum;
 
   @Prop([{ type: EstimatePayment, default: [] }])
   payments: EstimatePayment[];

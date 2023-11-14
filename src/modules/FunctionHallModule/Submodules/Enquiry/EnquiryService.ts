@@ -153,7 +153,6 @@ export class EnquiryService {
   async getAllEnquiries(): Promise<Enquiry[]> {
     return this.Enquiries.find({})
       .populate('enquiryType')
-      .populate('primaryReference')
       .populate('functionHall')
       .populate({
         path: 'followUps',
