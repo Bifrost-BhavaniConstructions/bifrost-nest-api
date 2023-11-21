@@ -119,6 +119,7 @@ export class CashAccountService {
         path: 'transactionPurpose',
         select: 'name',
       })
+      .populate({ path: 'site', select: 'name' })
       .sort({ createdAt: -1 })
       .exec();
   }

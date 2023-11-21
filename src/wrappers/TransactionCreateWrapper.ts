@@ -14,4 +14,5 @@ export class TransactionCreateWrapper {
   fromBalance?: number;
   toBalance?: number;
   functionHall: string;
+  site: string;
 }

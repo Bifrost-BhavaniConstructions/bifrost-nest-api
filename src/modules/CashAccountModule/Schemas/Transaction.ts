@@ -5,6 +5,7 @@ import { TransactionTypeEnum } from '../../../enums/TransactionTypeEnum';
 import { PlatformEnum } from '../../../enums/PlatformEnum';
 import { FunctionHall } from '../../FunctionHallModule/Schemas/FunctionHall';
 import { TransactionPurpose } from './TransactionPurpose';
+import { Site } from '../../SiteManagementModule/Schemas/Site';
 
 export type TransactionDocument = HydratedDocument<Transaction> & Document;
 
@@ -42,6 +43,9 @@ export class Transaction {
 
   @Prop({ type: 'ObjectId', ref: 'FunctionHall' })
   functionHall: FunctionHall;
+
+  @Prop({ type: 'ObjectId', ref: 'Site' })
+  site: Site;
 
   @Prop({ type: 'ObjectId', ref: 'TransactionPurpose' })
   transactionPurpose: TransactionPurpose;

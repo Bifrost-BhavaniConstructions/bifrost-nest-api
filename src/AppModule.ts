@@ -6,6 +6,7 @@ import { AuthModule } from './modules/AuthModule/AuthModule';
 import { HealthModule } from './modules/HealthModule/HealthModule';
 import { FunctionHallModule } from './modules/FunctionHallModule/FunctionHallModule';
 import { CashAccountModule } from './modules/CashAccountModule/CashAccountModule';
+import { SiteManagementModule } from './modules/SiteManagementModule/SiteManagementModule';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CashAccountModule } from './modules/CashAccountModule/CashAccountModule
     HealthModule,
     FunctionHallModule,
     CashAccountModule,
+    SiteManagementModule,
   ],
 })
 export class AppModule {}
