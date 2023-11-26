@@ -202,4 +202,26 @@ export class SiteManagementService {
     }
     return updatedCard.toObject();
   }
+
+  //AllAssets
+  async getAssetsOfUser(
+    userId: string,
+  ): Promise<{ cards: Card[]; phones: Phone[]; vehicles: Vehicle[] }> {
+    const user = await this.Users.findById(userId).exec();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const cards = await this.Cards.find({
+      assignedTo: user,
+    });
+    const phones = await this.Phones.find({
+      assignedTo: user,
+    });
+    const vehicles = await this.Vehicles.find({
+      assignedTo: user,
+    });
+
+    return { cards, phones, vehicles };
+  }
 }

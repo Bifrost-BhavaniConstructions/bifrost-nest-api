@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { Roles } from '../../decorators/Roles';
 import { UserRoleEnum } from '../../enums/UserRoleEnum';
 import { JWTGuard } from '../../guards/JWTGuard';
@@ -127,5 +135,14 @@ export class SiteManagementController {
   @UseGuards(JWTGuard, RoleGuard)
   getCards(): Promise<Card[]> {
     return this.siteManagementService.getAllCards();
+  }
+
+  @Roles(UserRoleEnum.SUPER_ADMIN)
+  @Get('/all-assets/:userId')
+  @UseGuards(JWTGuard, RoleGuard)
+  getAssetsOfUser(
+    @Param('userId') userId: string,
+  ): Promise<{ cards: Card[]; phones: Phone[]; vehicles: Vehicle[] }> {
+    return this.siteManagementService.getAssetsOfUser(userId);
   }
 }

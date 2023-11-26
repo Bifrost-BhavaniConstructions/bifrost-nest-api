@@ -23,6 +23,12 @@ import { SiteManagementController } from './SiteManagementController';
 import { Vehicle, VehicleSchema } from './Schemas/Vehicle';
 import { Phone, PhoneSchema } from './Schemas/Phone';
 import { Card, CardSchema } from './Schemas/Card';
+import { PurchaseRequestController } from './PurchaseRequestController';
+import {
+  PurchaseRequest,
+  PurchaseRequestSchema,
+} from './Schemas/PurchaseRequest';
+import { PurchaseRequestService } from './PurchaseRequestService';
 
 @Module({
   imports: [
@@ -35,11 +41,13 @@ import { Card, CardSchema } from './Schemas/Card';
       { name: CashAccount.name, schema: CashAccountSchema },
       { name: Transaction.name, schema: TransactionSchema },
       { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
+      { name: PurchaseRequest.name, schema: PurchaseRequestSchema },
     ]),
   ],
-  controllers: [SiteManagementController],
+  controllers: [SiteManagementController, PurchaseRequestController],
   providers: [
     SiteManagementService,
+    PurchaseRequestService,
     AuthService,
     UserService,
     JWTStrategy,
