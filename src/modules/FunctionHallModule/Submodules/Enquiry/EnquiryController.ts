@@ -127,4 +127,20 @@ export class EnquiryController {
     await this.enquiryService.updateStatus(enquiryId, checkInWrapper);
     return res.sendStatus(200);
   }
+  @Post('/close-enquiry/:enquiryId')
+  async closeEnquiry(
+    @Param('enquiryId') enquiryId: string,
+    @Res() res: Response,
+  ) {
+    await this.enquiryService.closeEnquiry(enquiryId);
+    return res.sendStatus(200);
+  }
+  @Post('/restore-enquiry/:enquiryId')
+  async restoreEnquiry(
+    @Param('enquiryId') enquiryId: string,
+    @Res() res: Response,
+  ) {
+    await this.enquiryService.restoreEnquiry(enquiryId);
+    return res.sendStatus(200);
+  }
 }

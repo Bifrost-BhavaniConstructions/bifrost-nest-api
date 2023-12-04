@@ -29,6 +29,9 @@ import {
   PurchaseRequestSchema,
 } from './Schemas/PurchaseRequest';
 import { PurchaseRequestService } from './PurchaseRequestService';
+import { Attendance, AttendanceSchema } from './Schemas/Attendance';
+import { AttendanceController } from './AttendanceController';
+import { AttendanceService } from './AttendanceService';
 
 @Module({
   imports: [
@@ -42,12 +45,18 @@ import { PurchaseRequestService } from './PurchaseRequestService';
       { name: Transaction.name, schema: TransactionSchema },
       { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
       { name: PurchaseRequest.name, schema: PurchaseRequestSchema },
+      { name: Attendance.name, schema: AttendanceSchema },
     ]),
   ],
-  controllers: [SiteManagementController, PurchaseRequestController],
+  controllers: [
+    SiteManagementController,
+    PurchaseRequestController,
+    AttendanceController,
+  ],
   providers: [
     SiteManagementService,
     PurchaseRequestService,
+    AttendanceService,
     AuthService,
     UserService,
     JWTStrategy,

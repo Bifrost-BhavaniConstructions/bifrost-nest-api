@@ -21,6 +21,9 @@ class DriverData {
 
   @Prop({ type: String })
   license: string;
+
+  @Prop({ type: Number })
+  idlePay?: number;
 }
 
 export default DriverData;

@@ -8,6 +8,7 @@ import BankData from './subschemas/BankData';
 import { PlatformEnum } from '../../enums/PlatformEnum';
 import ManagerData from './subschemas/ManagerData';
 import SecurityGuardSecondaryData from './subschemas/SecurityGuardSecondaryData';
+import VendorData from './subschemas/VendorData';
 
 export type UserDocument = HydratedDocument<User> & Document;
 
@@ -64,6 +65,9 @@ export class User {
 
   @Prop({ type: SecurityGuardSecondaryData })
   securityGuardSecondaryData: SecurityGuardSecondaryData;
+
+  @Prop({ type: VendorData })
+  vendorData: VendorData;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

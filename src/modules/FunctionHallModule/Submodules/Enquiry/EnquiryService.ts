@@ -200,4 +200,28 @@ export class EnquiryService {
     }
     return updatedEnquiry;
   }
+
+  async closeEnquiry(id: string): Promise<Enquiry> {
+    const updatedEnquiry = await this.Enquiries.findByIdAndUpdate(id, {
+      $set: {
+        isClosedEnquiry: true,
+      },
+    });
+    if (!updatedEnquiry) {
+      throw new NotFoundException(`Estimate with ID ${id} not found`);
+    }
+    return updatedEnquiry;
+  }
+
+  async restoreEnquiry(id: string): Promise<Enquiry> {
+    const updatedEnquiry = await this.Enquiries.findByIdAndUpdate(id, {
+      $set: {
+        isClosedEnquiry: false,
+      },
+    });
+    if (!updatedEnquiry) {
+      throw new NotFoundException(`Estimate with ID ${id} not found`);
+    }
+    return updatedEnquiry;
+  }
 }

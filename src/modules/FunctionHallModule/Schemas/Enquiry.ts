@@ -72,6 +72,9 @@ export class Enquiry {
   @Prop({ type: String, default: 0 })
   remark: string;
 
+  @Prop({ type: String })
+  muhurtam: string;
+
   @Prop({ type: String, enum: ModeOfPaymentEnum })
   modeOfPayment: ModeOfPaymentEnum;
 
@@ -98,6 +101,9 @@ export class Enquiry {
 
   @Prop({ type: Boolean, required: true, default: false })
   isCheckedOut: boolean;
+
+  @Prop({ type: Boolean, required: true, default: false })
+  isClosedEnquiry: boolean;
 }
 
 export const EnquirySchema = SchemaFactory.createForClass(Enquiry);
