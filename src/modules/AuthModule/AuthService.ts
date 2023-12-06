@@ -17,10 +17,10 @@ export class AuthService {
   async signPayload(payload: JWTPayload) {
     return {
       token: sign(payload, process.env.SECRET_KEY!, {
-        expiresIn: '1d',
+        expiresIn: '7d',
       }),
       refreshToken: sign(payload, process.env.SECRET_KEY!, {
-        expiresIn: '7d',
+        expiresIn: '14d',
       }),
     };
   }
