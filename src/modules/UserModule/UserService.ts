@@ -10,12 +10,14 @@ import { UserRoleEnum } from '../../enums/UserRoleEnum';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { CashAccountService } from '../CashAccountModule/CashAccountService';
+import { AttendanceService } from '../SiteManagementModule/AttendanceService';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private Users: Model<User>,
     private readonly cashAccountService: CashAccountService,
+    private readonly attendanceService: AttendanceService,
   ) {}
 
   async createUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
@@ -39,6 +41,9 @@ export class UserService {
     const newUser = new this.Users(userCreateWrapper);
     const savedUser = await newUser.save();
     await this.cashAccountService.createCashAccount(savedUser._id.toString());
+    await this.attendanceService.createAttendanceAccount(
+      savedUser._id.toString(),
+    );
     return sanitizeUser(savedUser.toObject());
   }
   async updateUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {

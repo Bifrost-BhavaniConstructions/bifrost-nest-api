@@ -12,6 +12,19 @@ import {
   TransactionPurpose,
   TransactionPurposeSchema,
 } from './Schemas/TransactionPurpose';
+import {
+  Attendance,
+  AttendanceSchema,
+} from '../SiteManagementModule/Schemas/Attendance';
+import {
+  AttendanceAccount,
+  AttendanceAccountSchema,
+} from '../SiteManagementModule/Schemas/AttendanceAccount';
+import { AttendanceService } from '../SiteManagementModule/AttendanceService';
+import {
+  SalaryAccountTransaction,
+  SalaryAccountTransactionSchema,
+} from '../SiteManagementModule/Schemas/AttendanceAccountTransaction';
 
 @Module({
   imports: [
@@ -20,9 +33,21 @@ import {
       { name: CashAccount.name, schema: CashAccountSchema },
       { name: Transaction.name, schema: TransactionSchema },
       { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
+      { name: Attendance.name, schema: AttendanceSchema },
+      { name: AttendanceAccount.name, schema: AttendanceAccountSchema },
+      {
+        name: SalaryAccountTransaction.name,
+        schema: SalaryAccountTransactionSchema,
+      },
     ]),
   ],
   controllers: [CashAccountController],
-  providers: [CashAccountService, AuthService, UserService, JWTStrategy],
+  providers: [
+    CashAccountService,
+    AuthService,
+    UserService,
+    JWTStrategy,
+    AttendanceService,
+  ],
 })
 export class CashAccountModule {}

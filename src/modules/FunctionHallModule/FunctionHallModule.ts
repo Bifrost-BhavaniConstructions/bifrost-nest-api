@@ -25,6 +25,19 @@ import {
   TransactionPurpose,
   TransactionPurposeSchema,
 } from '../CashAccountModule/Schemas/TransactionPurpose';
+import { AttendanceService } from '../SiteManagementModule/AttendanceService';
+import {
+  Attendance,
+  AttendanceSchema,
+} from '../SiteManagementModule/Schemas/Attendance';
+import {
+  AttendanceAccount,
+  AttendanceAccountSchema,
+} from '../SiteManagementModule/Schemas/AttendanceAccount';
+import {
+  SalaryAccountTransaction,
+  SalaryAccountTransactionSchema,
+} from '../SiteManagementModule/Schemas/AttendanceAccountTransaction';
 
 @Module({
   imports: [
@@ -37,6 +50,13 @@ import {
       { name: CashAccount.name, schema: CashAccountSchema },
       { name: Transaction.name, schema: TransactionSchema },
       { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
+      { name: TransactionPurpose.name, schema: TransactionPurposeSchema },
+      { name: Attendance.name, schema: AttendanceSchema },
+      { name: AttendanceAccount.name, schema: AttendanceAccountSchema },
+      {
+        name: SalaryAccountTransaction.name,
+        schema: SalaryAccountTransactionSchema,
+      },
     ]),
   ],
   controllers: [FunctionHallController, EnquiryController],
@@ -47,6 +67,7 @@ import {
     EnquiryService,
     JWTStrategy,
     CashAccountService,
+    AttendanceService,
   ],
 })
 export class FunctionHallModule {}

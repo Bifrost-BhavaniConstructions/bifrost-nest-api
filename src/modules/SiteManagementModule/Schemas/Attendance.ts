@@ -12,13 +12,15 @@ export class VendorTypeData {
   name: string;
   @Prop({ type: Number, required: true })
   cost: number;
+  @Prop({ type: Number, required: true })
+  amount: number;
 }
 
 @Schema({ _id: false, timestamps: true })
 export class VendorAttendance {
   //data
 
-  @Prop({ type: 'String', enum: SiteShiftEnum, ref: 'User' })
+  @Prop({ type: 'String', enum: SiteShiftEnum })
   shift?: SiteShiftEnum;
 }
 
@@ -48,11 +50,11 @@ export class Attendance {
   @Prop({ type: Date })
   on: Date;
 
-  @Prop({ type: 'String', enum: SiteDutyTypeEnum })
-  dutyType?: SiteDutyTypeEnum;
-
   @Prop({ type: Boolean, default: false })
   isBalanced: boolean;
+
+  @Prop({ type: 'String', enum: SiteDutyTypeEnum })
+  dutyType?: SiteDutyTypeEnum;
 }
 
 export const AttendanceSchema = SchemaFactory.createForClass(Attendance);
