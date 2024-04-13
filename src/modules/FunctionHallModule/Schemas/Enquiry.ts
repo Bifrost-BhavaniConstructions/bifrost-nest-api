@@ -69,7 +69,7 @@ export class Enquiry {
   @Prop({ type: Number, default: 0 })
   pax: number;
 
-  @Prop({ type: String, default: 0 })
+  @Prop({ type: String })
   remark: string;
 
   @Prop({ type: String })
@@ -104,6 +104,15 @@ export class Enquiry {
 
   @Prop({ type: Boolean, required: true, default: false })
   isClosedEnquiry: boolean;
+
+  @Prop({ type: String })
+  closeReason: string;
+
+  @Prop({ type: Number, default: 0 })
+  closeRefundAmount: number;
+
+  @Prop({ type: Boolean, required: true, default: false })
+  isFloating: boolean;
 }
 
 export const EnquirySchema = SchemaFactory.createForClass(Enquiry);

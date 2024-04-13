@@ -25,6 +25,9 @@ export class EnquiryService {
   async createEnquiry(
     enquiryCreateWrapper: EnquiryCreateWrapper,
   ): Promise<Enquiry> {
+    if (enquiryCreateWrapper.primaryReference === '') {
+      delete enquiryCreateWrapper.primaryReference;
+    }
     const createdEnquiry = new this.Enquiries(enquiryCreateWrapper);
     return createdEnquiry.save();
   }
@@ -40,15 +43,25 @@ export class EnquiryService {
     }
 
     delete enquiryUpdateWrapper.estimates;
-
+    if (enquiryUpdateWrapper.primaryReference === '') {
+      delete enquiryUpdateWrapper.primaryReference;
+    }
+    console.log(enquiryUpdateWrapper.primaryReference);
     const updatedEnquiry = await this.Enquiries.updateOne(
       { _id: new mongoose.Types.ObjectId(enquiryUpdateWrapper._id) },
       {
         $set: {
           ...enquiryUpdateWrapper,
         },
+        $unset: {
+          primaryReference: enquiryUpdateWrapper.primaryReference === undefined,
+        },
       },
     );
+    const updatedDocument = await this.Enquiries.findById(
+      enquiryUpdateWrapper._id,
+    );
+    console.log('Updated document:', updatedDocument);
 
     if (!updatedEnquiry) {
       throw new InternalServerErrorException('Unable to Update Enquiry');
@@ -151,7 +164,7 @@ export class EnquiryService {
   }
 
   async getAllEnquiries(): Promise<Enquiry[]> {
-    return this.Enquiries.find({})
+    return this.Enquiries.find({ isClosedEnquiry: false })
       .populate('enquiryType')
       .populate('functionHall')
       .populate({
@@ -201,10 +214,15 @@ export class EnquiryService {
     return updatedEnquiry;
   }
 
-  async closeEnquiry(id: string): Promise<Enquiry> {
+  async closeEnquiry(
+    id: string,
+    closeWrapper: { reason: string; refundAmount: number },
+  ): Promise<Enquiry> {
     const updatedEnquiry = await this.Enquiries.findByIdAndUpdate(id, {
       $set: {
         isClosedEnquiry: true,
+        closeReason: closeWrapper.reason,
+        closeRefundAmount: closeWrapper.refundAmount,
       },
     });
     if (!updatedEnquiry) {

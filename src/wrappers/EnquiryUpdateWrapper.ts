@@ -29,9 +29,8 @@ export class EnquiryUpdateWrapper {
   @IsNotEmpty()
   toDate: Date;
 
-  @IsNotEmpty()
-  @IsMongoId()
-  primaryReference: string;
+  @Optional()
+  primaryReference?: string;
 
   @IsString()
   secondaryReference: string;

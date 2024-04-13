@@ -130,9 +130,10 @@ export class EnquiryController {
   @Post('/close-enquiry/:enquiryId')
   async closeEnquiry(
     @Param('enquiryId') enquiryId: string,
+    @Body() closeWrapper: { reason: string; refundAmount: number },
     @Res() res: Response,
   ) {
-    await this.enquiryService.closeEnquiry(enquiryId);
+    await this.enquiryService.closeEnquiry(enquiryId, closeWrapper);
     return res.sendStatus(200);
   }
   @Post('/restore-enquiry/:enquiryId')

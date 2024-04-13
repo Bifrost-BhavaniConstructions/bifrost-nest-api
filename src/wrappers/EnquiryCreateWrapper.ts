@@ -1,5 +1,11 @@
 // Create a file, e.g., enquiry.dto.ts
-import { IsNotEmpty, IsString, IsArray, IsMongoId } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  IsMongoId,
+  IsOptional,
+} from 'class-validator';
 import Estimate from '../modules/FunctionHallModule/Schemas/SubSchemas/Estimate';
 import { PartOfDayEnum } from '../enums/PartOfDayEnum';
 
@@ -21,9 +27,8 @@ export class EnquiryCreateWrapper {
   @IsArray()
   estimates: Estimate[];
 
-  @IsNotEmpty()
-  @IsMongoId()
-  primaryReference: string;
+  @IsOptional()
+  primaryReference?: string;
 
   @IsString()
   secondaryReference: string;
