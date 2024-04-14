@@ -47,25 +47,39 @@ export class EnquiryService {
       delete enquiryUpdateWrapper.primaryReference;
     }
     console.log(enquiryUpdateWrapper.primaryReference);
-    const updatedEnquiry = await this.Enquiries.updateOne(
-      { _id: new mongoose.Types.ObjectId(enquiryUpdateWrapper._id) },
-      {
-        $set: {
-          ...enquiryUpdateWrapper,
+    if (enquiryUpdateWrapper.primaryReference === undefined) {
+      const updatedEnquiry = await this.Enquiries.updateOne(
+        { _id: new mongoose.Types.ObjectId(enquiryUpdateWrapper._id) },
+        {
+          $set: {
+            ...enquiryUpdateWrapper,
+          },
+          $unset: {
+            primaryReference:
+              enquiryUpdateWrapper.primaryReference === undefined,
+          },
         },
-        $unset: {
-          primaryReference: enquiryUpdateWrapper.primaryReference === undefined,
+      );
+      if (!updatedEnquiry) {
+        throw new InternalServerErrorException('Unable to Update Enquiry');
+      }
+    } else {
+      const updatedEnquiry = await this.Enquiries.updateOne(
+        { _id: new mongoose.Types.ObjectId(enquiryUpdateWrapper._id) },
+        {
+          $set: {
+            ...enquiryUpdateWrapper,
+          },
         },
-      },
-    );
+      );
+      if (!updatedEnquiry) {
+        throw new InternalServerErrorException('Unable to Update Enquiry');
+      }
+    }
     const updatedDocument = await this.Enquiries.findById(
       enquiryUpdateWrapper._id,
     );
     console.log('Updated document:', updatedDocument);
-
-    if (!updatedEnquiry) {
-      throw new InternalServerErrorException('Unable to Update Enquiry');
-    }
   }
 
   async addEstimateToEnquiry(
