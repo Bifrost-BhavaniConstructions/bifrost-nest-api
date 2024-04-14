@@ -178,7 +178,7 @@ export class EnquiryService {
   }
 
   async getAllEnquiries(): Promise<Enquiry[]> {
-    return this.Enquiries.find({ isClosedEnquiry: false })
+    return this.Enquiries.find({})
       .populate('enquiryType')
       .populate('functionHall')
       .populate({
