@@ -26,6 +26,7 @@ export class UserService {
         UserRoleEnum.SUPER_ADMIN,
         UserRoleEnum.ADMIN,
         UserRoleEnum.FH_MANAGER,
+        UserRoleEnum.SUPERVISOR,
       ].includes(userCreateWrapper.role)
     ) {
       const uid = uuidv4();
