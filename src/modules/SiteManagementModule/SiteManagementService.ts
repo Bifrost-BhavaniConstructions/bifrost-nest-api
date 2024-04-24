@@ -28,6 +28,9 @@ export class SiteManagementService {
   async createSite(siteCreateWrapper: SiteCreateWrapper): Promise<Site> {
     return new this.Sites({ ...siteCreateWrapper }).save();
   }
+  async deleteSite(siteId: string): Promise<void> {
+    await this.Sites.deleteOne({ _id: new mongoose.Types.ObjectId(siteId) });
+  }
   async updateSite(siteUpdateWrapper: SiteUpdateWrapper): Promise<Site> {
     const updatedFunctionHall = await this.Sites.findOneAndUpdate(
       {

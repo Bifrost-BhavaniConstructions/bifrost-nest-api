@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -37,6 +38,13 @@ export class SiteManagementController {
   @UseGuards(JWTGuard, RoleGuard)
   updateSite(@Body() siteUpdateWrapper: SiteUpdateWrapper): Promise<Site> {
     return this.siteManagementService.updateSite(siteUpdateWrapper);
+  }
+
+  @Roles(UserRoleEnum.SUPER_ADMIN)
+  @Delete('/delete/:siteId')
+  @UseGuards(JWTGuard, RoleGuard)
+  deleteSite(@Param('siteId') siteId: string): Promise<void> {
+    return this.siteManagementService.deleteSite(siteId);
   }
 
   @Roles(UserRoleEnum.SUPER_ADMIN)
