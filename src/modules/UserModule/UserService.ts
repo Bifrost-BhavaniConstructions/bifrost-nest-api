@@ -49,7 +49,7 @@ export class UserService {
   }
   async updateUser(userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
     const isUserExist = await this.Users.exists({
-      username: userCreateWrapper.username,
+      _id: userCreateWrapper._id,
     });
     if (!isUserExist) {
       throw new HttpException("User doesn't exist", HttpStatus.CONFLICT);
@@ -61,7 +61,7 @@ export class UserService {
       updateData.password = await bcrypt.hash(userCreateWrapper.password, 10);
     }
     const updatedUser = await this.Users.findOneAndUpdate(
-      { username: userCreateWrapper.username },
+      { _id: userCreateWrapper._id },
       updateData,
       { new: true },
     );
