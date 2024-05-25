@@ -38,6 +38,9 @@ export class Attendance {
   @Prop({ type: Number })
   shiftPay?: number;
 
+  @Prop({ type: Number })
+  otPay?: number;
+
   @Prop({ type: 'String', enum: UserRoleEnum })
   role: UserRoleEnum;
 

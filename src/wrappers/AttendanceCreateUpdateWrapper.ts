@@ -13,4 +13,5 @@ export interface AttendanceCreateUpdateWrapper {
   on: Date;
   dutyType?: SiteDutyTypeEnum;
   shiftPay?: number;
+  otPay?: number;
 }

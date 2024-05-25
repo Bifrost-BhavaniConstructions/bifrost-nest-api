@@ -78,6 +78,20 @@ export class AttendanceService {
       attendances.forEach((attendance) => {
         totalSalary += attendance.shiftPay || 0;
       });
+    } else if (userRole === UserRoleEnum.SUPERVISOR) {
+      const attendances = await this.Attendances.find({
+        of: userId,
+        otPay: { $exists: true },
+        on: {
+          $gte: new Date(currentYear, currentMonth, 1),
+          $lt: new Date(currentYear, currentMonth, currentDate.getDate() + 1),
+        },
+        isBalanced: false,
+      }).exec();
+
+      attendances.forEach((attendance) => {
+        totalSalary += attendance.otPay || 0;
+      });
     } else if (userRole === UserRoleEnum.VENDOR) {
       const attendances = await this.Attendances.find({
         of: userId,
@@ -146,6 +160,20 @@ export class AttendanceService {
         attendance.vendorItems?.forEach((item: VendorTypeData) => {
           totalSalary += item.cost || 0;
         });
+      });
+    } else if (userRole === UserRoleEnum.SUPERVISOR) {
+      const attendances = await this.Attendances.find({
+        of: userId,
+        otPay: { $exists: true },
+        on: {
+          $gte: fromDate,
+          $lt: toDate,
+        },
+        isBalanced: false,
+      }).exec();
+
+      attendances.forEach((attendance) => {
+        totalSalary += attendance.otPay || 0;
       });
     } else {
       throw new Error('User role not supported for salary calculation');
@@ -234,6 +262,8 @@ export class AttendanceService {
         formattedAttendance.title = this.getVendorTitle(attendance);
       } else if (userRole === UserRoleEnum.DRIVER) {
         formattedAttendance.title = this.getDriverTitle(attendance);
+      } else if (userRole === UserRoleEnum.SUPERVISOR) {
+        formattedAttendance.title = this.getSupervisorTitle(attendance);
       } else {
         formattedAttendance.title = 'Role not supported for attendance';
       }
@@ -254,6 +284,13 @@ export class AttendanceService {
     let title = '';
     if (attendance.shift && attendance.dutyType) {
       title = `${attendance.shift} - ${attendance.dutyType} (₹ ${attendance.shiftPay})`;
+    }
+    return title;
+  }
+  private getSupervisorTitle(attendance: Attendance): string {
+    let title = '';
+    if (attendance.otPay) {
+      title = `OT Pay (₹ ${attendance.otPay})`;
     }
     return title;
   }
@@ -386,6 +423,19 @@ export class AttendanceService {
         {
           of: userId,
           vendorItems: { $exists: true, $ne: [] },
+          on: {
+            $gte: fromDate,
+            $lt: toDate,
+          },
+          isBalanced: false,
+        },
+        { $set: { isBalanced: true } },
+      ).exec();
+    } else if (userRole === UserRoleEnum.SUPERVISOR) {
+      await this.Attendances.updateMany(
+        {
+          of: userId,
+          otPay: { $exists: true },
           on: {
             $gte: fromDate,
             $lt: toDate,
