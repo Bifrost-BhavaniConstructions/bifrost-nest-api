@@ -10,6 +10,9 @@ class ManagerData {
 
   @Prop()
   payOT: number;
+
+  @Prop({ type: [String], required: false })
+  functionHalls: string;
 }
 
 export default ManagerData;

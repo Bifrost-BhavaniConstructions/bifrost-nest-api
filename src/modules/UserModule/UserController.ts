@@ -11,14 +11,24 @@ import { UserDTO } from '../../dtos/UserDTO';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
+  @Roles(
+    UserRoleEnum.SUPER_ADMIN,
+    UserRoleEnum.ADMIN,
+    UserRoleEnum.SUPERVISOR,
+    UserRoleEnum.FH_MANAGER,
+  )
   @Post('/')
   @UseGuards(JWTGuard, RoleGuard)
   createUser(@Body() userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {
     return this.userService.createUser(userCreateWrapper);
   }
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
+  @Roles(
+    UserRoleEnum.SUPER_ADMIN,
+    UserRoleEnum.ADMIN,
+    UserRoleEnum.SUPERVISOR,
+    UserRoleEnum.FH_MANAGER,
+  )
   @Put('/')
   @UseGuards(JWTGuard, RoleGuard)
   updateUser(@Body() userCreateWrapper: UserCreateWrapper): Promise<UserDTO> {

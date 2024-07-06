@@ -11,7 +11,6 @@ import { FunctionHall } from './Schemas/FunctionHall';
 export class FunctionHallController {
   constructor(private readonly functionHallService: FunctionHallService) {}
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Post('/')
   @UseGuards(JWTGuard, RoleGuard)
   createFunctionHall(
@@ -21,7 +20,6 @@ export class FunctionHallController {
       functionHallCreateWrapper,
     );
   }
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Put('/')
   @UseGuards(JWTGuard, RoleGuard)
   updateFunctionHall(

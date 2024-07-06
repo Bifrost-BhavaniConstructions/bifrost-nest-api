@@ -12,7 +12,6 @@ import { Transaction } from './Schemas/Transaction';
 export class CashAccountController {
   constructor(private readonly cashAccountService: CashAccountService) {}
 
-  @Roles(UserRoleEnum.SUPER_ADMIN)
   @Post('/account/:userId')
   @UseGuards(JWTGuard, RoleGuard)
   createCashAccount(@Param('userId') userId: string): Promise<CashAccount> {
